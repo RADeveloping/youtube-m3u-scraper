@@ -45,4 +45,12 @@ def process_links(input_file, output_file):
     if m3u8_links:
         with open(output_file, "w") as m3u_file:
             for m3u8 in m3u8_links:
-                m3u_file.write(m3u8 +
+                m3u_file.write(m3u8 + "\n")
+        print(f"Saved .m3u8 links to {output_file}")
+    else:
+        print("No valid .m3u8 links found.")
+
+if __name__ == "__main__":
+    print("Starting processing...")
+    process_links(INPUT_FILE, OUTPUT_FILE)
+    print("Processing complete.")
