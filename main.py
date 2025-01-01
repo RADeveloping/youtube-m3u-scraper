@@ -1,7 +1,6 @@
 import os
 import requests
 import re
-from time import sleep
 
 # Constants
 INPUT_FILE = "youtube_links.txt"
@@ -46,15 +45,4 @@ def process_links(input_file, output_file):
     if m3u8_links:
         with open(output_file, "w") as m3u_file:
             for m3u8 in m3u8_links:
-                m3u_file.write(m3u8 + "\n")
-        print(f"Saved .m3u8 links to {output_file}")
-    else:
-        print("No valid .m3u8 links found.")
-
-if __name__ == "__main__":
-    while True:
-        print("Starting processing...")
-        process_links(INPUT_FILE, OUTPUT_FILE)
-        print("Processing complete. Waiting for refresh...")
-        # Adjust this delay based on YouTube's expiration policy
-        sleep(3600)
+                m3u_file.write(m3u8 +
