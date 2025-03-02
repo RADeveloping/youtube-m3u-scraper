@@ -1,27 +1,28 @@
 import os
-import requests
-import re
+import yt_dlp
 
-# Constants
 INPUT_FILE = "youtube_links.txt"
 OUTPUT_FILE = "output.m3u"
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
 
 def fetch_m3u8(youtube_url):
     """
-    Extracts the .m3u8 link from a YouTube video or livestream.
+    Uses yt-dlp to extract the .m3u8 link from a YouTube video or livestream.
     """
-    headers = {"User-Agent": USER_AGENT}
-    response = requests.get(youtube_url, headers=headers)
-    if response.status_code != 200:
-        print(f"Failed to fetch YouTube URL: {youtube_url}")
-        return None
+    ydl_opts = {
+        "quiet": True,
+        "simulate": True,
+        "force_generic_extractor": False,
+        "format": "best",
+    }
 
-    # Regex to extract .m3u8 link
-    m3u8_match = re.search(r'(https?://[^\s]+\.m3u8)', response.text)
-    if m3u8_match:
-        return m3u8_match.group(1)
-    print(f"No .m3u8 link found for: {youtube_url}")
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        try:
+            info = ydl.extract_info(youtube_url, download=False)
+            if "url" in info:
+                return info["url"]
+        except Exception as e:
+            print(f"Error extracting {youtube_url}: {e}")
+
     return None
 
 def process_links(input_file, output_file):
