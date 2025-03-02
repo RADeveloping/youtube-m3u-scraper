@@ -1,18 +1,18 @@
 import os
 import yt_dlp
 
+# Constants
 INPUT_FILE = "youtube_links.txt"
 OUTPUT_FILE = "output.m3u"
 
 def fetch_m3u8(youtube_url):
     """
-    Uses yt-dlp to extract the .m3u8 link from a YouTube video or livestream.
+    Uses yt-dlp to extract the .m3u8 link from a public YouTube livestream.
     """
     ydl_opts = {
         "quiet": True,
         "simulate": True,
-        "force_generic_extractor": False,
-        "format": "best",
+        "format": "best",  # Get the best available format
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -27,7 +27,7 @@ def fetch_m3u8(youtube_url):
 
 def process_links(input_file, output_file):
     """
-    Processes YouTube links and writes .m3u8 links to an .m3u file.
+    Processes YouTube livestream links and writes .m3u8 links to an .m3u file.
     """
     if not os.path.exists(input_file):
         print(f"Input file '{input_file}' not found.")
